@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Learning Roadmap</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
+  .page { max-width: 720px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 1.5rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .stat { background: #fff; border: 1px solid #e5e5e0; border-radius: 10px; padding: 12px 14px; text-align: center; }
+  .stat-num { font-size: 26px; font-weight: 600; color: #1a1a1a; }
+  .stat-label { font-size: 11px; color: #888; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .progress-wrap { background: #e5e5e0; border-radius: 8px; height: 8px; margin-bottom: 6px; overflow: hidden; }
+  .progress-fill { height: 8px; border-radius: 8px; background: #1D9E75; transition: width 0.4s ease; }
+  .progress-label { font-size: 12px; color: #888; text-align: right; margin-bottom: 1.5rem; }
+
+  .flow { background: #fff; border: 1px solid #e5e5e0; border-radius: 10px; padding: 12px 16px; margin-bottom: 1.5rem; font-size: 13px; color: #555; }
+  .flow span { font-weight: 600; color: #1a1a1a; }
+
+  .module { background: #fff; border: 1px solid #e5e5e0; border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .mod-header { display: flex; align-items: center; gap: 10px; padding: 13px 16px; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .mod-header:hover { background: #f9f9f6; }
+  .mod-num { font-size: 11px; font-weight: 600; color: #999; min-width: 24px; }
+  .mod-title { flex: 1; font-size: 14px; font-weight: 500; color: #1a1a1a; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tag { font-size: 10px; padding: 2px 7px; border-radius: 5px; font-weight: 600; flex-shrink: 0; }
+  .tag-core { background: #EEEDFE; color: #534AB7; }
+  .tag-imp { background: #FAECE7; color: #993C1D; }
+  .badge { font-size: 11px; padding: 3px 9px; border-radius: 6px; font-weight: 500; flex-shrink: 0; }
+  .badge-todo { background: #f0f0ec; color: #888; }
+  .badge-partial { background: #FAEEDA; color: #854F0B; }
+  .badge-done { background: #EAF3DE; color: #3B6D11; }
+  .arrow { font-size: 11px; color: #bbb; transition: transform 0.2s; }
+  .arrow.open { transform: rotate(90deg); }
+
+  .topics { display: none; padding: 0 16px 12px 52px; }
+  .topics.open { display: block; }
+  .topic-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f0f0ec; }
+  .topic-row:last-child { border-bottom: none; }
+  .topic-row label { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; width: 100%; }
+  .topic-row input[type=checkbox] { margin-top: 2px; accent-color: #1D9E75; width: 15px; height: 15px; flex-shrink: 0; }
+  .topic-text { font-size: 13px; color: #333; line-height: 1.45; }
+  .topic-text.done { color: #aaa; text-decoration: line-through; }
+
+  .footer { text-align: center; font-size: 12px; color: #bbb; margin-top: 2rem; }
+
+  @media (max-width: 480px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .stat-num { font-size: 20px; }
+    .topics { padding-left: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Java Learning Roadmap</h1>
+  <p class="subtitle">Check off topics as you finish them. Progress is saved in your browser.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="s-done">0</div><div class="stat-label">Done</div></div>
+    <div class="stat"><div class="stat-num" id="s-left">0</div><div class="stat-label">Left</div></div>
+    <div class="stat"><div class="stat-num" id="s-pct">0%</div><div class="stat-label">Complete</div></div>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  <div class="progress-label" id="prog-lbl">0 of 0 topics</div>
+
+  <div class="flow">Learning flow: <span>Basics</span> → <span>Logic</span> → <span>OOP</span> → <span>Exceptions</span> → <span>Collections</span> → <span>Advanced</span> → <span>Projects</span></div>
+
+  <div id="modules"></div>
+
+  <div class="footer">Save this file and open it anytime — works offline. Share it with friends!</div>
+</div>
+
+<script>
+const MODULES = [
+  { id:1, title:"Java fundamentals", topics:["History & features of Java","Platform independence (WORA)","JDK, JRE, JVM — architecture & flow","Java program structure","Compilation & execution process","First program — Hello World"] },
+  { id:2, title:"Data types, variables & operators", topics:["Primitive data types (memory & range)","Non-primitive types (String, Array, Object)","Local, instance & static variables","Arithmetic & relational operators","Logical, unary & assignment operators","Ternary operator"] },
+  { id:3, title:"Control flow statements", topics:["if, if-else, nested if","switch-case","for loop","while loop","do-while loop","break & continue"] },
+  { id:4, title:"Arrays", topics:["1D array","2D array","Array traversal","Linear searching","Basic sorting"] },
+  { id:5, title:"String handling", topics:["String class & immutability","String vs StringBuilder vs StringBuffer","Important string methods","Reverse string program","Palindrome & anagram programs","Character frequency program"] },
+  { id:6, title:"OOP — class, object & methods", tags:["core"], topics:["Class & object definition","Heap & stack memory concept","Method declaration & overloading","Default & parameterized constructors","Constructor overloading & chaining (this())","this keyword — all use cases"] },
+  { id:7, title:"Encapsulation & access specifiers", tags:["core"], topics:["Data hiding concept","Getter & setter methods","private, default, protected, public"] },
+  { id:8, title:"Inheritance", tags:["core"], topics:["Single inheritance","Multilevel inheritance","Hierarchical inheritance","Method overriding","super keyword","Constructor in inheritance"] },
+  { id:9, title:"Polymorphism", tags:["core"], topics:["Compile-time — method overloading","Runtime — method overriding"] },
+  { id:10, title:"Abstraction", tags:["core"], topics:["Abstract class & abstract methods","Interface basics","Multiple inheritance using interface","default & static methods in interface (Java 8)"] },
+  { id:11, title:"Static keyword", topics:["Static variable","Static method","Static block","Static vs non-static"] },
+  { id:12, title:"Association — aggregation & composition", tags:["imp"], topics:["HAS-A relationship concept","Aggregation (weak relationship)","Composition (strong relationship)","Difference between aggregation & composition"] },
+  { id:13, title:"Exception handling", tags:["imp"], topics:["What is an exception","Checked vs unchecked exceptions","try, catch, finally","Multiple catch blocks","Nested try","throw & throws keywords","Rethrow concept","Custom (user-defined) exceptions"] },
+  { id:14, title:"Wrapper classes", topics:["int to Integer & other wrappers","Autoboxing","Unboxing"] },
+  { id:15, title:"Packages", topics:["Built-in packages","User-defined packages","import keyword"] },
+  { id:16, title:"Collections framework", tags:["imp"], topics:["ArrayList","LinkedList","HashSet","TreeSet","HashMap","TreeMap","Iterator","Comparable vs Comparator"] },
+  { id:17, title:"Multithreading", tags:["imp"], topics:["Thread class","Runnable interface","Thread lifecycle","Synchronization"] },
+  { id:18, title:"File handling", topics:["File class","FileReader & FileWriter","BufferedReader","Serialization & deserialization"] },
+  { id:19, title:"Java 8 features", tags:["imp"], topics:["Lambda expressions","Functional interface","Stream API","forEach method"] },
+  { id:20, title:"JDBC — database connectivity", topics:["JDBC architecture","Connection setup","Statement & PreparedStatement","ResultSet"] },
+  { id:21, title:"Advanced concepts", tags:["imp"], topics:["Object class methods (toString, equals, hashCode)","final keyword (variable, method, class)","instanceof operator","Cloning (Cloneable)","Enum","Inner classes"] },
+  { id:22, title:"Mini projects", topics:["Student management system","Banking system","Library system"] }
+];
+
+const KEY = "java_syllabus_v2";
+let state = {};
+
+function load() {
+  try { const r = localStorage.getItem(KEY); if(r) state = JSON.parse(r); } catch(e) {}
+}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function getStatus(mod) {
+  const total = mod.topics.length;
+  const done = mod.topics.filter((_,i) => state[mod.id+":"+i]).length;
+  if(done === 0) return "todo";
+  if(done === total) return "done";
+  return "partial";
+}
+
+function updateStats() {
+  let total = 0, done = 0;
+  MODULES.forEach(m => { m.topics.forEach((_,i) => { total++; if(state[m.id+":"+i]) done++; }); });
+  document.getElementById("s-done").textContent = done;
+  document.getElementById("s-left").textContent = total - done;
+  document.getElementById("s-pct").textContent = Math.round(done / total * 100) + "%";
+  document.getElementById("prog").style.width = (done / total * 100) + "%";
+  document.getElementById("prog-lbl").textContent = done + " of " + total + " topics";
+}
+
+function updateBadge(id) {
+  const mod = MODULES.find(m => m.id === id);
+  const s = getStatus(mod);
+  const b = document.getElementById("b-"+id);
+  const map = { todo:["badge badge-todo","To do"], partial:["badge badge-partial","In progress"], done:["badge badge-done","Done"] };
+  b.className = map[s][0];
+  b.textContent = map[s][1];
+}
+
+function toggleModule(id) {
+  document.getElementById("t-"+id).classList.toggle("open");
+  document.getElementById("a-"+id).classList.toggle("open");
+}
+
+function toggleTopic(modId, idx, el) {
+  const key = modId+":"+idx;
+  state[key] = el.checked;
+  el.nextElementSibling.className = "topic-text" + (el.checked ? " done" : "");
+  save();
+  updateBadge(modId);
+  updateStats();
+}
+
+function render() {
+  const wrap = document.getElementById("modules");
+  MODULES.forEach(mod => {
+    const s = getStatus(mod);
+    const tagHtml = (mod.tags||[]).map(t =>
+      t==="core" ? `<span class="tag tag-core">core OOP</span>` : `<span class="tag tag-imp">important</span>`
+    ).join("");
+    const bMap = { todo:"badge badge-todo", partial:"badge badge-partial", done:"badge badge-done" };
+    const bText = { todo:"To do", partial:"In progress", done:"Done" };
+
+    const div = document.createElement("div");
+    div.className = "module";
+    div.innerHTML = `
+      <div class="mod-header" onclick="toggleModule(${mod.id})">
+        <span class="mod-num">M${mod.id}</span>
+        <span class="mod-title">${mod.title} ${tagHtml}</span>
+        <span class="${bMap[s]}" id="b-${mod.id}">${bText[s]}</span>
+        <span class="arrow" id="a-${mod.id}">&#9654;</span>
+      </div>
+      <div class="topics" id="t-${mod.id}">
+        ${mod.topics.map((t,i) => {
+          const checked = state[mod.id+":"+i];
+          return `<div class="topic-row"><label>
+            <input type="checkbox" ${checked?"checked":""} onchange="toggleTopic(${mod.id},${i},this)">
+            <span class="topic-text${checked?" done":""}">${t}</span>
+          </label></div>`;
+        }).join("")}
+      </div>`;
+    wrap.appendChild(div);
+  });
+  updateStats();
+}
+
+load();
+render();
+</script>
+</body>
+</html>
